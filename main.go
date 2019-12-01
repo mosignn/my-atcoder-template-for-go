@@ -23,23 +23,6 @@ func nextInt() int {
 	return i
 }
 
-func scanLargeLine() string {
-	// for large string > 64*1024
-	var reader = bufio.NewReaderSize(os.Stdin, 1000000)
-	buf := make([]byte, 0, 1000000)
-	for {
-		l, p, e := reader.ReadLine()
-		if e != nil {
-			panic(e)
-		}
-		buf = append(buf, l...)
-		if !p {
-			break
-		}
-	}
-	return string(buf)
-}
-
 func scanNums(len int) (nums []int) {
 	var num int
 	for i := 0; i < len; i++ {
@@ -79,8 +62,28 @@ func sumSlice(nums []int) int {
 	return sum
 }
 
+func binarySearch(target int, list []int) int {
+	left := 0
+	right := len(list) - 1
+	mid := (left + right) / 2
+
+	for {
+		if list[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+		mid = (left + right) / 2
+		if left >= right {
+			break
+		}
+	}
+	return mid
+}
+
 func main() {
 	scanner.Split(bufio.ScanWords) // switch to separating by space
+	// scanner.Buffer([]byte{}, 1000000009) // switch to read large size input
 	N := nextInt()
 	nums := scanNums(N)
 	fmt.Println(nums)
