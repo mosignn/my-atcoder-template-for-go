@@ -8,42 +8,43 @@ import (
 	"strconv"
 )
 
-type io struct {
+// IO struct
+type IO struct {
 	scanner *bufio.Scanner
 	writer  *bufio.Writer
 }
 
-func newIO() *io {
-	return &io{
+func newIO() *IO {
+	return &IO{
 		scanner: bufio.NewScanner(os.Stdin),
 		writer:  bufio.NewWriter(os.Stdout),
 	}
 }
 
-func (io *io) nextLine() string {
-	io.scanner.Scan()
-	return io.scanner.Text()
+func (IO *IO) nextLine() string {
+	IO.scanner.Scan()
+	return IO.scanner.Text()
 }
 
-func (io *io) nextInt() int {
-	i, e := strconv.Atoi(io.nextLine())
+func (IO *IO) nextInt() int {
+	i, e := strconv.Atoi(IO.nextLine())
 	if e != nil {
 		panic(e)
 	}
 	return i
 }
 
-func (io *io) scanNums(len int) (nums []int) {
+func (IO *IO) scanNums(len int) (nums []int) {
 	var num int
 	for i := 0; i < len; i++ {
-		num = io.nextInt()
+		num = IO.nextInt()
 		nums = append(nums, num)
 	}
 	return
 }
 
-func (io *io) printLn(a ...interface{}) {
-	fmt.Fprintln(io.writer, a...)
+func (IO *IO) printLn(a ...interface{}) {
+	fmt.Fprintln(IO.writer, a...)
 }
 
 func min(nums ...int) int {
@@ -102,11 +103,10 @@ func binarySearch(target int, list []int) int {
 	return mid
 }
 
-// IO will be orverwrited in test
-var IO = newIO()
+var io = newIO()
 
 func main() {
-	IO.scanner.Split(bufio.ScanWords) // switch to separating by space
+	io.scanner.Split(bufio.ScanWords) // switch to separating by space
 	// scanner.Buffer([]byte{}, 1000000009) // switch to read large size input
-	// defer io.Flush()
+	defer io.writer.Flush()
 }
