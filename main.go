@@ -8,45 +8,42 @@ import (
 	"strconv"
 )
 
-var scanner = bufio.NewScanner(os.Stdin)
-
-func nextLine() string {
-	scanner.Scan()
-	return scanner.Text()
+type io struct {
+	scanner *bufio.Scanner
+	writer  *bufio.Writer
 }
 
-func nextInt() int {
-	i, e := strconv.Atoi(nextLine())
+func newIO() *io {
+	return &io{
+		scanner: bufio.NewScanner(os.Stdin),
+		writer:  bufio.NewWriter(os.Stdout),
+	}
+}
+
+func (io *io) nextLine() string {
+	io.scanner.Scan()
+	return io.scanner.Text()
+}
+
+func (io *io) nextInt() int {
+	i, e := strconv.Atoi(io.nextLine())
 	if e != nil {
 		panic(e)
 	}
 	return i
 }
 
-func scanLargeLine() string {
-	// for large string > 64*1024
-	var reader = bufio.NewReaderSize(os.Stdin, 1000000)
-	buf := make([]byte, 0, 1000000)
-	for {
-		l, p, e := reader.ReadLine()
-		if e != nil {
-			panic(e)
-		}
-		buf = append(buf, l...)
-		if !p {
-			break
-		}
-	}
-	return string(buf)
-}
-
-func scanNums(len int) (nums []int) {
+func (io *io) scanNums(len int) (nums []int) {
 	var num int
 	for i := 0; i < len; i++ {
-		num = nextInt()
+		num = io.nextInt()
 		nums = append(nums, num)
 	}
 	return
+}
+
+func (io *io) printLn(a ...interface{}) {
+	fmt.Fprintln(io.writer, a...)
 }
 
 func min(nums ...int) int {
@@ -71,6 +68,13 @@ func max(nums ...int) int {
 	return res
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func sumSlice(nums []int) int {
 	sum := 0
 	for _, n := range nums {
@@ -79,9 +83,30 @@ func sumSlice(nums []int) int {
 	return sum
 }
 
+func binarySearch(target int, list []int) int {
+	left := 0
+	right := len(list) - 1
+	mid := (left + right) / 2
+
+	for {
+		if list[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+		mid = (left + right) / 2
+		if left >= right {
+			break
+		}
+	}
+	return mid
+}
+
+// IO will be orverwrited in test
+var IO = newIO()
+
 func main() {
-	scanner.Split(bufio.ScanWords) // switch to separating by space
-	N := nextInt()
-	nums := scanNums(N)
-	fmt.Println(nums)
+	IO.scanner.Split(bufio.ScanWords) // switch to separating by space
+	// scanner.Buffer([]byte{}, 1000000009) // switch to read large size input
+	// defer io.Flush()
 }
