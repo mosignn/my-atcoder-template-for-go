@@ -29,6 +29,6 @@ func stubStdin(inbuf string, fn func()) {
 	inw.Write([]byte(inbuf))
 	inw.Close()
 	os.Stdin = inr
-	IO.scanner = bufio.NewScanner(os.Stdin)
+	io.scanner = bufio.NewScanner(os.Stdin)
 	fn()
 }
