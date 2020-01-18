@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -32,6 +33,11 @@ func (IO *IO) nextInt() int {
 		panic(e)
 	}
 	return i
+}
+
+func (IO *IO) nextInt64() int64 {
+	a, _ := strconv.ParseInt(IO.nextLine(), 10, 64)
+	return a
 }
 
 func (IO *IO) scanNums(len int) (nums []int) {
@@ -103,10 +109,32 @@ func binarySearch(target int, list []int) int {
 	return mid
 }
 
+// <<<<<<< functions for 2D array
+type array2D [][]int
+
+func (a array2D) Len() int {
+	return len(a)
+}
+
+func (a array2D) Less(i, j int) bool {
+	// return a[i][0] < a[j][0] // sort by 1st arg
+	return a[i][1] < a[j][1] // sort by 2nd arg
+}
+
+func (a array2D) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a array2D) sort() {
+	sort.Sort(a)
+}
+
+// >>>>>>> functions for 2D array
+
 var io = newIO()
 
 func main() {
-	io.scanner.Split(bufio.ScanWords) // switch to separating by space
-	// scanner.Buffer([]byte{}, 1000000009) // switch to read large size input
+	io.scanner.Split(bufio.ScanWords)      // switch to separating by space
+	io.scanner.Buffer([]byte{}, 100000009) // switch to read large size input
 	defer io.writer.Flush()
 }
