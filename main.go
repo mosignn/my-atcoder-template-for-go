@@ -90,6 +90,7 @@ func abs(x int) int {
 	return x
 }
 
+// calc a^b
 func powInt(a, b int) int {
 	result := 1
 	for i := 1; i <= b; i++ {
@@ -214,15 +215,26 @@ func (s sieveEratos) factorize(n int) map[int]int {
 // <<<<<<< functions for prime numbers
 
 // >>>>>>> functions for inverse element
-func getInverseElement(d int) int {
-	i := 1
+
+// calc a^n mod
+func modPow(a, n, mod int) int {
+	res := 1
 	for {
-		di := d * i
-		if di%mod == 1 {
+		if n&1 == 1 {
+			res = res * a % mod
+		}
+		n = n >> 1
+		a = a * a % mod
+		if n == 0 {
 			break
 		}
 	}
-	return i
+	return res
+}
+
+// calc a^-1 mod
+func getInverseElement(a, mod int) int {
+	return modPow(a, mod-2, mod)
 }
 
 // <<<<<<< functions for inverse element
