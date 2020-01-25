@@ -205,4 +205,10 @@ func main() {
 	io.scanner.Split(bufio.ScanWords)      // switch to separating by space
 	io.scanner.Buffer([]byte{}, 100000009) // switch to read large size input
 	defer io.writer.Flush()
+
+	io.printLn(solve())
+}
+
+func solve() (ans interface{}) {
+	return
 }
