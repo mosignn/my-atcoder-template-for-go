@@ -14,7 +14,7 @@ const (
 )
 
 // IO struct
-// <<<<<<< functions for io
+// >>>>>>> functions for io
 type IO struct {
 	scanner *bufio.Scanner
 	writer  *bufio.Writer
@@ -58,9 +58,9 @@ func (IO *IO) printLn(a ...interface{}) {
 	fmt.Fprintln(IO.writer, a...)
 }
 
-// >>>>>>> functions for io
+// <<<<<<< functions for io
 
-// <<<<<<< functions for basic calculation
+// >>>>>>> functions for basic calculation
 func min(nums ...int) int {
 	if len(nums) == 0 {
 		panic("funciton min() requires at least one argument.")
@@ -106,7 +106,19 @@ func sumSlice(nums []int) int {
 	return sum
 }
 
-// >>>>>>> functions for basic calculation
+// <<<<<<< functions for basic calculation
+
+// >>>>>>> functions for typical algorithm
+
+func gcd(a, b int) int {
+	for {
+		a, b = b, a%b
+		if b == 0 {
+			break
+		}
+	}
+	return a
+}
 
 func binarySearch(target int, list []int) int {
 	left := 0
@@ -127,7 +139,9 @@ func binarySearch(target int, list []int) int {
 	return mid
 }
 
-// <<<<<<< functions for 2D array
+// <<<<<<< functions for typical algorithm
+
+// >>>>>>> functions for 2D array
 type array2D [][]int
 
 func (a array2D) Len() int {
@@ -147,9 +161,9 @@ func (a array2D) sort() {
 	sort.Sort(a)
 }
 
-// >>>>>>> functions for 2D array
+// <<<<<<< functions for 2D array
 
-// <<<<<<< functions for prime numbers
+// >>>>>>> functions for prime numbers
 type sieveEratos struct {
 	max   int
 	sieve []int
@@ -197,13 +211,27 @@ func (s sieveEratos) factorize(n int) map[int]int {
 	return factors
 }
 
-// >>>>>>> functions for prime numbers
+// <<<<<<< functions for prime numbers
+
+// >>>>>>> functions for inverse element
+func getInverseElement(d int) int {
+	i := 1
+	for {
+		di := d * i
+		if di%mod == 1 {
+			break
+		}
+	}
+	return i
+}
+
+// <<<<<<< functions for inverse element
 
 var io = newIO()
 
 func main() {
 	io.scanner.Split(bufio.ScanWords)      // switch to separating by space
-	io.scanner.Buffer([]byte{}, 100000009) // switch to read large size input
+	io.scanner.Buffer([]byte{}, 100000007) // switch to read large size input
 	defer io.writer.Flush()
 
 	io.printLn(solve())
