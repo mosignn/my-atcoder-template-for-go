@@ -9,7 +9,12 @@ import (
 	"strconv"
 )
 
+const (
+	mod = int(1e9) + 7
+)
+
 // IO struct
+// <<<<<<< functions for io
 type IO struct {
 	scanner *bufio.Scanner
 	writer  *bufio.Writer
@@ -53,6 +58,9 @@ func (IO *IO) printLn(a ...interface{}) {
 	fmt.Fprintln(IO.writer, a...)
 }
 
+// >>>>>>> functions for io
+
+// <<<<<<< functions for basic calculation
 func min(nums ...int) int {
 	if len(nums) == 0 {
 		panic("funciton min() requires at least one argument.")
@@ -82,6 +90,14 @@ func abs(x int) int {
 	return x
 }
 
+func powInt(a, b int) int {
+	result := 1
+	for i := 1; i <= b; i++ {
+		result *= a
+	}
+	return result
+}
+
 func sumSlice(nums []int) int {
 	sum := 0
 	for _, n := range nums {
@@ -89,6 +105,8 @@ func sumSlice(nums []int) int {
 	}
 	return sum
 }
+
+// >>>>>>> functions for basic calculation
 
 func binarySearch(target int, list []int) int {
 	left := 0
@@ -131,10 +149,66 @@ func (a array2D) sort() {
 
 // >>>>>>> functions for 2D array
 
+// <<<<<<< functions for prime numbers
+type sieveEratos struct {
+	max   int
+	sieve []int
+}
+
+func newSieveEratos(n int) sieveEratos {
+	s := sieveEratos{
+		max:   n,
+		sieve: make([]int, n+1),
+	}
+	s.createSieve()
+	return s
+}
+
+func (s *sieveEratos) createSieve() {
+	s.sieve[1] = 1
+	for i := 2; i <= s.max; i++ {
+		if s.sieve[i] > 0 {
+			continue
+		}
+		s.sieve[i] = i
+		for j := i * 2; j <= s.max; j += i {
+			s.sieve[j] = i
+		}
+	}
+}
+
+func (s sieveEratos) isPrime(n int) bool {
+	if n < 2 {
+		return false
+	}
+	return s.sieve[n] == n
+}
+
+func (s sieveEratos) factorize(n int) map[int]int {
+	factors := map[int]int{}
+	for {
+		f := s.sieve[n]
+		factors[f]++
+		if f == n {
+			break
+		}
+		n = n / f
+	}
+	return factors
+}
+
+// >>>>>>> functions for prime numbers
+
 var io = newIO()
 
 func main() {
 	io.scanner.Split(bufio.ScanWords)      // switch to separating by space
 	io.scanner.Buffer([]byte{}, 100000009) // switch to read large size input
 	defer io.writer.Flush()
+
+	io.printLn(solve())
+}
+
+func solve() (ans interface{}) {
+	return
 }
