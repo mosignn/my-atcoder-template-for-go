@@ -220,13 +220,13 @@ type sieveEratos struct {
 	sieve []int
 }
 
-func newSieveEratos(n int) sieveEratos {
+func newSieveEratos(n int) *sieveEratos {
 	s := sieveEratos{
 		max:   n,
 		sieve: make([]int, n+1),
 	}
 	s.createSieve()
-	return s
+	return &s
 }
 
 func (s *sieveEratos) createSieve() {
@@ -288,6 +288,53 @@ func getInverseElement(a, mod int) int {
 }
 
 // <<<<<<< functions for inverse element
+
+// >>>>>>> functions for Unin Find
+
+type UnionFind struct {
+	data []int
+}
+
+func newUnion(N int) *UnionFind {
+	d := make([]int, N) // if > 0 represents root, else represents size of tree
+	for i := range d {
+		d[i] = -1 // initialize all nodes root of single node tree
+	}
+	union := UnionFind{
+		data: d,
+	}
+	return &union
+}
+
+func (u *UnionFind) findRoot(x int) int {
+	if u.data[x] < 0 {
+		return x
+	}
+	u.data[x] = u.findRoot(u.data[x])
+	return u.data[x]
+}
+
+func (u *UnionFind) belongingToSameTree(a, b int) bool {
+	return u.findRoot(a) == u.findRoot(b)
+}
+
+func (u *UnionFind) unite(a, b int) {
+	rootA := u.findRoot(a)
+	rootB := u.findRoot(b)
+
+	if rootA == rootB {
+		return
+	}
+
+	if u.data[rootA] > u.data[rootB] { // if tree from rootA is smaller than the other
+		rootA, rootB = rootB, rootA // always make tree from rootA larger than the other
+	}
+
+	u.data[rootA] += u.data[rootB]
+	u.data[rootB] = rootA
+}
+
+// <<<<<<< functions for Union Find
 
 var io = newIO()
 
