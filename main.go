@@ -27,35 +27,40 @@ func newIO() *IO {
 	}
 }
 
-func (IO *IO) nextLine() string {
-	IO.scanner.Scan()
-	return IO.scanner.Text()
+func (io *IO) nextLine() string {
+	io.scanner.Scan()
+	return io.scanner.Text()
 }
 
-func (IO *IO) nextInt() int {
-	i, e := strconv.Atoi(IO.nextLine())
+func (io *IO) nextInt() int {
+	i, e := strconv.Atoi(io.nextLine())
 	if e != nil {
 		panic(e)
 	}
 	return i
 }
 
-func (IO *IO) nextInt64() int64 {
-	a, _ := strconv.ParseInt(IO.nextLine(), 10, 64)
+func (io *IO) nextInt64() int64 {
+	a, _ := strconv.ParseInt(io.nextLine(), 10, 64)
 	return a
 }
 
-func (IO *IO) scanNums(len int) (nums []int) {
+func (io *IO) nextfloat64() float64 {
+	a, _ := strconv.ParseFloat(io.nextLine(), 64)
+	return a
+}
+
+func (io *IO) scanNums(len int) (nums []int) {
 	var num int
 	for i := 0; i < len; i++ {
-		num = IO.nextInt()
+		num = io.nextInt()
 		nums = append(nums, num)
 	}
 	return
 }
 
-func (IO *IO) printLn(a ...interface{}) {
-	fmt.Fprintln(IO.writer, a...)
+func (io *IO) printLn(a ...interface{}) {
+	fmt.Fprintln(io.writer, a...)
 }
 
 // <<<<<<< functions for io
@@ -107,6 +112,14 @@ func sumSlice(nums []int) int {
 	return sum
 }
 
+func sumSliceFloat64(nums []float64) float64 {
+	sum := float64(0)
+	for _, n := range nums {
+		sum += n
+	}
+	return sum
+}
+
 // <<<<<<< functions for basic calculation
 
 // >>>>>>> functions for typical algorithm
@@ -138,6 +151,43 @@ func binarySearch(target int, list []int) int {
 		}
 	}
 	return mid
+}
+
+// calculate nPk
+func permutation(n, k int) int {
+
+	if k < 0 || n < k {
+		panic("invalid k is given")
+	}
+
+	if k == 0 {
+		return 1
+	}
+
+	v := 1
+	for i := 0; i < k; i++ {
+		v *= (n - i)
+		v %= mod
+	}
+
+	return v
+}
+
+// calculate n!
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return permutation(n, n-1)
+}
+
+// calculate nCk
+func combination(n, k int) int {
+	if n/2 < k {
+		k = n - k
+	}
+	factor := getInverseElement(factorial(k), mod)
+	return permutation(n, k) * factor % mod
 }
 
 // <<<<<<< functions for typical algorithm
@@ -192,14 +242,14 @@ func (s *sieveEratos) createSieve() {
 	}
 }
 
-func (s sieveEratos) isPrime(n int) bool {
+func (s *sieveEratos) isPrime(n int) bool {
 	if n < 2 {
 		return false
 	}
 	return s.sieve[n] == n
 }
 
-func (s sieveEratos) factorize(n int) map[int]int {
+func (s *sieveEratos) factorize(n int) map[int]int {
 	factors := map[int]int{}
 	for {
 		f := s.sieve[n]
@@ -246,9 +296,12 @@ func main() {
 	io.scanner.Buffer([]byte{}, 100000007) // switch to read large size input
 	defer io.writer.Flush()
 
-	io.printLn(solve())
+	solve()
 }
 
-func solve() (ans interface{}) {
-	return
+func solve() {
+	// N := io.nextInt()
+	// nums := io.scanNums(N)
+
+	io.printLn()
 }
